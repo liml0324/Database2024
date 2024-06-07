@@ -3,7 +3,7 @@
 /* Created on:     2024-05-17 20:43:12                          */
 /*==============================================================*/
 
-use Faculty;
+use faculty;
 
 -- alter table 主讲课程 
 --    drop foreign key FK_主讲课程_主讲课程_教师;
@@ -66,7 +66,7 @@ create table 主讲课程
    年份                   int  comment '',
    学期                   int  comment '',
    承担学时                 int  comment '',
-   primary key (工号, 课程号),
+   primary key (工号, 课程号)
    -- foreign key (工号) references 教师 (工号),
    -- foreign key (课程号) references 课程 (课程号)
 );
@@ -80,7 +80,7 @@ create table 发表论文
    序号                   int not null  comment '',
    排名                   int  comment '',
    是否通讯作者               bool  comment '',
-   primary key (工号, 序号),
+   primary key (工号, 序号)
    -- foreign key (工号) references 教师 (工号),
    -- foreign key (序号) references 论文 (序号)
 );
@@ -94,7 +94,7 @@ create table 承担项目
    项目号                  char(255) not null  comment '',
    排名                   int  comment '',
    承担经费                 float  comment '',
-   primary key (工号, 项目号),
+   primary key (工号, 项目号)
    -- foreign key (工号) references 教师 (工号),
    -- foreign key (项目号) references 项目 (项目号)
 );

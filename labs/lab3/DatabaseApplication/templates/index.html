@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>教师教学科研登记系统</title>
+    <link href="../static/css/bootstrap.css" rel="stylesheet">
+    <style>
+        body {
+            background: url('../static/img/background.jpg') no-repeat center center fixed; 
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .card {
+            border-radius: 15px; /* 设置卡片的圆角 */
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); /* 添加阴影 *
+            transition: 0.3s; /* 添加过渡效果 *//
+        }
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 12px 40px 0 rgba(0, 0, 0, 0.19); /* 鼠标悬停时改变阴影 */
+            transform: translateY(-10px); /* 鼠标悬停时向上移动 */
+        }
+        .card-header {
+            font-size: 2em; /* 设置字体大小 */
+            display: flex; /* 使用flex布局 */
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+            height: 500px; /* 设置高度为100% */
+        }
+        .container.top { /* 为新的类添加样式 */
+            height: 200px; /* 设置高度为视口的高度 */
+            background-color: transparent; /* 设置背景颜色为透明 */
+            display: flex; /* 使用flex布局 */
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="container top"> <!-- 使用container-fluid使内容填满整个页面 -->
+        <div class="row">
+            <div class="col-lg-12 text-white text-center py-3"> <!-- 使用col-lg-12使占据整行，bg-primary为背景颜色为蓝色，text-white为字体颜色为白色，py-3为上下内边距为3 -->
+                <h1>教师教学科研登记系统</h1>
+            </div>
+        </div>
+    </div>
+    <div class="container"> <!-- 使用container-fluid使内容填满整个页面 -->
+        
+        <div class="row">
+            <div class="col-lg-3 mb-4"> <!-- 使用col-lg-3使每行有4个卡片，mb-4为卡片添加下边距 -->
+                <a href="paper" class="text-decoration-none"> <!-- 添加text-decoration-none类来移除链接的下划线 -->
+                    <div class="card text-white bg-primary h-100"> <!-- 使用h-100使卡片高度为100% -->
+                        <div class="card-header">登记发表论文情况</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 mb-4">
+                <a href="project" class="text-decoration-none"> <!-- 添加text-decoration-none类来移除链接的下划线 -->
+                    <div class="card text-white bg-success h-100">
+                        <div class="card-header">登记承担项目情况</div>
+                    </div>
+                </a>
+            </div>
+            <div class="col-lg-3 mb-4">
+                <div class="card text-white bg-warning h-100">
+                    <a href="course" class="text-decoration-none"> <!-- 添加text-decoration-none类来移除链接的下划线 -->
+                        <div class="card-header">登记主讲课程情况</div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-3 mb-4">
+                <div class="card text-white bg-danger h-100">
+                    <a href="query" class="text-decoration-none"> <!-- 添加text-decoration-none类来移除链接的下划线 -->
+                        <div class="card-header">查询统计</div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
+</body>
+</html>
