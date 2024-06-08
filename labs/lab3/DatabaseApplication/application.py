@@ -90,8 +90,21 @@ def paper_edit(id):
     if request.method == 'GET':
         return render_template('paper/edit.html', paper=paper, authors=authors)
 
-@app.route('/project', methods=['GET'])
+@app.route('/project', methods=['GET', 'POST'])
 def project():
+    if request.method == 'POST':
+        id = request.form.get('id')
+        name = request.form.get('name')
+        source = request.form.get('source')
+        type = request.form.getlist('type')
+        funds = request.form.get('funds')
+        begin_year = request.form.get('begin_year')
+        end_year = request.form.get('end_year')
+        leader_id = request.form.get('leader_id')
+        projects = mysql.project.get_projects(id, name, source, type, funds, begin_year, end_year, leader_id)
+        return render_template('project.html', projects=projects)
+    if request.method == 'GET':
+        return render_template('project.html', projects=None)
     return render_template('project.html')
 
 @app.route('/course', methods=['GET'])

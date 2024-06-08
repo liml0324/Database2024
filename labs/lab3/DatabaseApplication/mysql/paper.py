@@ -16,33 +16,81 @@ def get_paper(id, title, source, year, type, level, authorid):
         sql = "SELECT Distinct 论文.序号 FROM 论文, 发表论文, 教师 WHERE 论文.序号=发表论文.序号 AND 发表论文.工号=教师.工号 "
     else:
         sql = "SELECT Distinct 论文.序号 FROM 论文 WHERE 1=1 "
+    flag=True
     if id:
-        sql += "AND 论文.序号=%s "
-        params.append(int(id))
+        try:
+            id = int(id)
+        except:
+            cursor.close()
+            conn.close()
+            return None 
+        if id < 1:
+            cursor.close()
+            conn.close()
+            return None 
+        if flag:
+            sql += "AND 论文.序号=%s "
+            params.append(int(id))
+    flag=True
     if title:
-        sql += "AND 论文.题目 LIKE '%%%s%%' "
-        params.append(title)
+        sql += "AND 论文.论文名称 LIKE %s "
+        params.append("%"+title+"%")
     if source:
-        sql += "AND 论文.来源 LIKE '%%%s%%' "
-        params.append(source)
+        sql += "AND 论文.发表源 LIKE %s "
+        params.append("%"+source+"%")
     if year:
-        sql += "AND 论文.年份=%s "
-        params.append(year+'-01-01')
+        try:
+            year = int(year)
+        except:
+            cursor.close()
+            conn.close()
+            return None 
+        if year < 1500 or year > datetime.now().year:
+            cursor.close()
+            conn.close()
+            return None 
+        if flag:
+            sql += "AND 论文.发表年份=%s "
+            params.append(str(year)+'-01-01')
+    flag=True
     if type:
+        
         sql += "AND ("
         for t in type:
+            try:
+                t = int(t)
+            except:
+                cursor.close()
+                conn.close()
+                return None
+            if t < 1 or t > 4:
+                cursor.close()
+                conn.close()
+                return None
+            
             sql += "论文.类型='%s' OR "
             params.append(int(t))
         sql = sql[:-4] + ') '
     if level:
         sql += "AND ("
         for l in level:
+            try:
+                l = int(l)
+            except:
+                cursor.close()
+                conn.close()
+                return None
+            if l < 1 or l > 6:
+                cursor.close()
+                conn.close()
+                return None
             sql += "论文.级别='%s' OR "
             params.append(int(l))
         sql = sql[:-4] + ') '
     if authorid:
-        sql += "AND 教师.工号=%s "
+        sql += "AND (教师.工号=%s OR 教师.姓名 LIKE %s)"
         params.append(authorid)
+        params.append("%"+authorid+"%")
     
     cursor.execute(sql, params)
     paper_ids = cursor.fetchall()
