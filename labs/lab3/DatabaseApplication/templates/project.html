@@ -80,6 +80,7 @@
                         class="form-control"
                         id="id"
                         name="id"
+                        value="{{query.id}}"
                         placeholder="项目号"
                     />
                 </div>
@@ -87,7 +88,9 @@
                     <input
                         type="text"
                         class="form-control"
+                        id="name"
                         name="name"
+                        value="{{query.name}}"
                         placeholder="项目名称"
                     />
                 </div>
@@ -95,7 +98,9 @@
                     <input
                         type="text"
                         class="form-control"
+                        id="source"
                         name="source"
+                        value="{{query.source}}"
                         placeholder="项目来源"
                     />
                 </div>
@@ -105,13 +110,9 @@
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="1"
-                            name="type"
-                            value="1"
-                        />
+                        <input class="form-check-input" type="checkbox" id="1"
+                        name="type" {{ "checked" if '1' in query.type }}
+                        value="1" />
                         <label class="form-check-label" for="1"
                             >国家级项目</label
                         >
@@ -120,13 +121,9 @@
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="2"
-                            name="type"
-                            value="2"
-                        />
+                        <input class="form-check-input" type="checkbox" id="2"
+                        name="type" {{ "checked" if '2' in query.type }}
+                        value="2" />
                         <label class="form-check-label" for="2"
                             >省部级项目</label
                         >
@@ -135,13 +132,9 @@
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="3"
-                            name="type"
-                            value="3"
-                        />
+                        <input class="form-check-input" type="checkbox" id="3"
+                        name="type" {{ "checked" if '3' in query.type }}
+                        value="3" />
                         <label class="form-check-label" for="3"
                             >市厅级项目</label
                         >
@@ -151,13 +144,9 @@
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="4"
-                            name="type"
-                            value="4"
-                        />
+                        <input class="form-check-input" type="checkbox" id="4"
+                        name="type" {{ "checked" if '4' in query.type }}
+                        value="4" />
                         <label class="form-check-label" for="4"
                             >企业合作项目</label
                         >
@@ -166,13 +155,9 @@
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="5"
-                            name="type"
-                            value="5"
-                        />
+                        <input class="form-check-input" type="checkbox" id="5"
+                        name="type" {{ "checked" if '5' in query.type }}
+                        value="5" />
                         <label class="form-check-label" for="5"
                             >其他类型项目</label
                         >
@@ -182,25 +167,29 @@
                     <input
                         type="text"
                         class="form-control"
-                        id="year"
+                        id="funds"
                         name="funds"
-                        placeholder="总经费"
+                        value="{{query.funds}}"
+                        placeholder="总经费(元)"
                     />
                 </div>
                 <div class="form-group">
                     <input
-                        type="text"
+                        type="number"
                         class="form-control"
+                        id="begin_year"
                         name="begin_year"
+                        value="{{query.begin_year}}"
                         placeholder="开始年份"
                     />
                 </div>
                 <div class="form-group">
                     <input
-                        type="text"
+                        type="number"
                         class="form-control"
-                        id="year"
+                        id="end_year"
                         name="end_year"
+                        value="{{query.end_year}}"
                         placeholder="结束年份"
                     />
                 </div>
@@ -208,9 +197,10 @@
                     <input
                         type="text"
                         class="form-control"
-                        id="year"
+                        id="leader_id"
                         name="leader_id"
-                        placeholder="项目负责人工号"
+                        value="{{query.leader_id}}"
+                        placeholder="项目负责人工号或姓名"
                     />
                 </div>
                 <div class="form-group">
@@ -246,7 +236,7 @@
                         <td>{{ project.source }}</td>
                         <!-- 其他列... -->
                         <td>{{ project.type }}</td>
-                        <td>{{ project.funds }}</td>
+                        <td>{{ project.funds }}元</td>
                         <td>{{ project.begin_year }}</td>
                         <td>{{ project.end_year }}</td>
                         <td>{{ project.leaders }}</td>
@@ -280,17 +270,9 @@
         <script>
             $(document).ready(function () {
                 $("#query_form").submit(function (event) {
-                    var inputValue = $("#id").val();
-                    if (inputValue === "") {
-                        return;
-                    }
-                    if (!Number.isInteger(Number(inputValue))) {
-                        event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("项目号必须为整数！");
-                        return;
-                    }
-                    var inputValue = $("#funds").val();
-                    if (Number.isNaN(Number(inputValue))) {
+                    var inputFunds = $("#funds").val();
+                    console.log(inputFunds);
+                    if (inputFunds !== "" && Number.isNaN(Number(inputFunds))) {
                         event.preventDefault(); // 阻止表单的默认提交行为
                         alert("总经费必须为数字！");
                         return;
@@ -299,38 +281,52 @@
                     // 其他代码...
                     var inputYear = $("#begin_year").val();
                     var curYear = new Date().getFullYear();
-                    if (inputYear === "") {
-                        return;
-                    }
-                    if (!Number.isInteger(Number(inputYear))) {
-                        event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("开始年份必须为整数！");
-                        return;
-                    } else if (
-                        Number(inputYear) < 1500 ||
-                        Number(inputYear) > curYear
-                    ) {
-                        event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("开始年份不合法！");
-                        return;
+                    if (inputYear !== "") {
+                        if (!Number.isInteger(Number(inputYear))) {
+                            event.preventDefault(); // 阻止表单的默认提交行为
+                            alert("开始年份必须为整数！");
+                            return;
+                        } else if (
+                            Number(inputYear) < 1958 ||
+                            Number(inputYear) > curYear
+                        ) {
+                            event.preventDefault(); // 阻止表单的默认提交行为
+                            alert("开始年份不合法！");
+                            return;
+                        }
                     }
                     var inputYear = $("#end_year").val();
                     var curYear = new Date().getFullYear();
                     if (inputYear === "") {
-                        return;
-                    }
-                    if (!Number.isInteger(Number(inputYear))) {
+                    } else if (!Number.isInteger(Number(inputYear))) {
                         event.preventDefault(); // 阻止表单的默认提交行为
                         alert("结束年份必须为整数！");
                         return;
                     } else if (
-                        Number(inputYear) < 1500 ||
-                        Number(inputYear) > curYear
+                        Number(inputYear) < 1958
                     ) {
                         event.preventDefault(); // 阻止表单的默认提交行为
                         alert("结束年份不合法！");
                         return;
                     }
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $(".btn-danger").click(function (event) {
+                    event.preventDefault(); // 阻止默认的点击行为
+                    var url = $(this).attr("href"); // 获取链接的URL
+                    var row = $(this).closest("tr"); // 获取按钮所在的表格行
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        success: function (result) {
+                            // 在这里处理服务器返回的结果
+                            alert(result.message); // 弹出提示信息
+                            if (result.message == "删除成功！") row.remove(); // 删除表格行
+                        },
+                    });
                 });
             });
         </script>

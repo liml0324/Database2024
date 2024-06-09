@@ -21,9 +21,14 @@ def paper():
         level = request.form.getlist('level')
         authorid = request.form.get('authorid')
         papers = mysql.paper.get_paper(id, title, source, year, type, level, authorid)
-        return render_template('paper.html', papers=papers)
+        query = {'id': id, 'title': title, 'source': source, 'year': year, 'authorid': authorid}
+        for t in type:
+            query['type'+t] = 1
+        for l in level:
+            query['level'+l] = 1
+        return render_template('paper.html', papers=papers, query=query)
     if request.method == 'GET':
-        return render_template('paper.html', papers=None)
+        return render_template('paper.html', papers=None, query=None)
 
 @app.route('/paper/register', methods=['GET', 'POST'])
 def paper_register():
@@ -48,16 +53,16 @@ def paper_register():
     if request.method == 'GET':
         return render_template('paper/register.html')
 
-@app.route('/paper/<id>/delete', methods=['GET'])
+@app.route('/paper/<id>/delete', methods=['DELETE'])
 def paper_delete(id):
     message = mysql.paper.delete_paper(id)
-    return render_template('paper/delete.html', message=message)
+    return jsonify({'message': message})
 
 @app.route('/paper/<id>/view', methods=['GET'])
 def paper_view(id):
     result = mysql.paper.get_paper_details(id)
     if not result:
-        return render_template('paper/view_warning.html', message='序号不合法或论文不存在！')
+        return render_template('warning.html', message='序号不合法或论文不存在！')
     paper, authors = result
     return render_template('paper/view.html', paper=paper, authors=authors)
 
@@ -65,7 +70,7 @@ def paper_view(id):
 def paper_edit(id):
     result = mysql.paper.get_paper_details(id, False)
     if not result:
-        return render_template('paper/edit_warning.html', message='序号不合法或论文不存在！')
+        return render_template('warning.html', message='序号不合法或论文不存在！')
     paper, authors = result
     if request.method == 'POST':
         authorids = []
@@ -102,10 +107,74 @@ def project():
         end_year = request.form.get('end_year')
         leader_id = request.form.get('leader_id')
         projects = mysql.project.get_projects(id, name, source, type, funds, begin_year, end_year, leader_id)
-        return render_template('project.html', projects=projects)
+        query = {'id': id, 'name': name, 'source': source, 'funds': funds, 'begin_year': begin_year, 'end_year': end_year, 'leader_id': leader_id, 'type': type}
+        print(type)
+        return render_template('project.html', projects=projects, query=query)
     if request.method == 'GET':
-        return render_template('project.html', projects=None)
+        return render_template('project.html', projects=None, query=None)
     return render_template('project.html')
+
+@app.route('/project/<id>/delete', methods=['DELETE'])
+def project_delete(id):
+    message=mysql.project.delete_project(id)
+    return jsonify({'message': message})
+
+@app.route('/project/<id>/view', methods=['GET'])
+def project_view(id):
+    result = mysql.project.get_project_details(id)
+    if not result:
+        return render_template('warning.html', message='项目号不合法或项目不存在！')
+    project, leaders = result
+    return render_template('project/view.html', project=project, leaders=leaders)
+
+@app.route('/project/<id>/edit', methods=['GET', 'POST'])
+def project_edit(id):
+    result = mysql.project.get_project_details(id, False)
+    if not result:
+        return render_template('warning.html', message='项目号不合法或项目不存在！')
+    project, leaders = result
+    if request.method == 'POST':
+        leaders = []
+        for i in range(1, 100):
+            leaderId = request.form.get('leaderId'+str(i))
+            if not leaderId:
+                break
+            leaderFunds = request.form.get('leaderFunds'+str(i))
+            leaders.append([leaderId, leaderFunds])
+        old_id = id
+        id = request.form.get('id')
+        name = request.form.get('name')
+        source = request.form.get('source')
+        type = request.form.get('type')
+        funds = request.form.get('funds')
+        begin_year = request.form.get('begin_year')
+        end_year = request.form.get('end_year')
+        json = mysql.project.edit_project(old_id, id, name, source, type, funds, begin_year, end_year, leaders)
+        return jsonify(json)
+    if request.method == 'GET':
+        return render_template('project/edit.html', project=project, leaders=leaders)
+
+@app.route('/project/register', methods=['GET', 'POST'])
+def project_register():
+    if request.method == 'POST':
+        leaders = []
+        for i in range(1, 100):
+            leaderId = request.form.get('leaderId'+str(i))
+            if not leaderId:
+                break
+            leaderFunds = request.form.get('leaderFunds'+str(i))
+            leaders.append([leaderId, leaderFunds])
+        id = request.form.get('id')
+        name = request.form.get('name')
+        source = request.form.get('source')
+        type = request.form.get('type')
+        funds = request.form.get('funds')
+        begin_year = request.form.get('begin_year')
+        end_year = request.form.get('end_year')
+        json = mysql.project.register_project(id, name, source, type, funds, begin_year, end_year, leaders)
+        return jsonify(json)
+    if request.method == 'GET':
+        return render_template('project/register.html')
 
 @app.route('/course', methods=['GET'])
 def course():

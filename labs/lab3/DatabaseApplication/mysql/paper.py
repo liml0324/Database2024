@@ -45,7 +45,7 @@ def get_paper(id, title, source, year, type, level, authorid):
             cursor.close()
             conn.close()
             return None 
-        if year < 1500 or year > datetime.now().year:
+        if year < 1958 or year > datetime.now().year:
             cursor.close()
             conn.close()
             return None 
@@ -97,8 +97,15 @@ def get_paper(id, title, source, year, type, level, authorid):
     papers = []
     for paper_id in paper_ids:
         author_names = []
-        cursor.execute("SELECT 教师.姓名 FROM 教师, 发表论文 WHERE 发表论文.工号=教师.工号 AND 序号=%s", paper_id)
-        author_names.append(cursor.fetchall())
+        cursor.execute("SELECT 教师.姓名, 发表论文.排名 FROM 教师, 发表论文 WHERE 发表论文.工号=教师.工号 AND 序号=%s", paper_id)
+        author_data = cursor.fetchall()
+        author_data = list(author_data)
+        author_names = []
+        # author_data按排名排序
+        author_data.sort(key=lambda x: x[1])
+        for author in author_data:
+            author_names.append(author[0])
+        # author_names.append(cursor.fetchall())
         cursor.execute("SELECT * FROM 论文 WHERE 序号=%s", paper_id)
         paper = {}
         paper['id'], paper['title'], paper['source'], paper['year'], paper['type'], paper['level'] = cursor.fetchone()
@@ -106,9 +113,9 @@ def get_paper(id, title, source, year, type, level, authorid):
         paper['level'] = level_list[paper['level']]
         paper['year'] = str(paper['year']).split('-')[0]
         author_name_str = ''
-        if author_names and author_names[0]:
-            for author_name in author_names[0]:
-                author_name_str += author_name[0] + ', '
+        if author_names:
+            for author_name in author_names:
+                author_name_str += author_name + ', '
         paper['authors'] = author_name_str[:-2]
         papers.append(paper)
     cursor.close()
@@ -118,7 +125,7 @@ def get_paper(id, title, source, year, type, level, authorid):
     else:
         return None
     
-def get_paper_details(id, transaction=True):
+def get_paper_details(id, transform=True):
     conn = mysql.connect(
         host='localhost',
         user='root',
@@ -142,7 +149,7 @@ def get_paper_details(id, transaction=True):
     paper = {}
     paper['id'], paper['title'], paper['source'], paper['year'], paper['type'], paper['level'] = temp
     paper['year'] = str(paper['year']).split('-')[0]
-    if transaction:
+    if transform:
         paper['type'] = ['', 'full paper', 'short paper', 'poster paper', 'demo paper'][paper['type']]
         paper['level'] = ['', 'CCF-A', 'CCF-B', 'CCF-C', '中文 CCF-A', '中文 CCF-B', '无等级'][paper['level']]
 
@@ -164,25 +171,27 @@ def get_paper_details(id, transaction=True):
         cursor.execute("SELECT * FROM 教师 WHERE 工号=%s", authorid)
         author = {}
         author['id'], author['name'], author['gender'], author['title'] = cursor.fetchone()
-        if transaction:
+        if transform:
             if author['gender'] == 1:
                 author['gender'] = '男'
             else:
                 author['gender'] = '女'
-        if transaction:
+        if transform:
             author['title'] = ['','博士后' , '助教', '讲师', '副教授', '特任教授', '教授', '助理研究员', '特任副研究员', '副研究员', '特任研究员', '研究员'][author['title']]
         author['no'] = rank
         if authorid == corresponding:
-            if transaction:
+            if transform:
                 author['corresponding'] = '是'
             else:
                 author['corresponding'] = 1
         else:
-            if transaction:
+            if transform:
                 author['corresponding'] = '否'
             else:
                 author['corresponding'] = 0
         authors.append(author)
+    # authors对rank排序
+    authors.sort(key=lambda x: x['no'])
     cursor.close()
     conn.close()
     return paper, authors
@@ -232,7 +241,7 @@ def register_paper(id, title, source, year, type, level, authors):
         year = int(year)
     except:
         return {'message': '年份必须为整数！'}
-    if year < 1500 or year > datetime.now().year:
+    if year < 1958 or year > datetime.now().year:
         return {'message': '年份不合法！'}
     
     try:
@@ -353,7 +362,7 @@ def edit_paper(old_id, id, title, source, year, type, level, authors):
         year = int(year)
     except:
         return {'message': '年份必须为整数！'}
-    if year < 1500 or year > datetime.now().year:
+    if year < 1958 or year > datetime.now().year:
         return {'message': '年份不合法！'}
     
     try:
@@ -398,15 +407,12 @@ def edit_paper(old_id, id, title, source, year, type, level, authors):
     if corresponding > len(authorids) or corresponding < 1:
         return {'message': '通讯作者不合法！'}
     
-    cursor.execute("DELETE FROM 发表论文 WHERE 序号=%s", old_id)
-    cursor.execute("DELETE FROM 论文 WHERE 序号=%s", old_id)
+    cursor.execute("SELECT * FROM 论文 WHERE 序号=%s", old_id)
+    if not cursor.fetchall():
+        return {'message': '原序号不存在！'}
+    cursor.execute("SELECT * FROM 论文 WHERE 序号=%s", id)
     if id == '':
-        cursor.execute("SELECT MAX(序号) FROM 论文")
-        id = cursor.fetchone()
-        if id[0]:
-            id = id[0] + 1
-        else:
-            id = 1
+        id = old_id
     else:   # 检查id是否为正整数
         try:
             id = int(id)
@@ -414,6 +420,12 @@ def edit_paper(old_id, id, title, source, year, type, level, authors):
             return {'message': '序号必须为正整数！'}
         if id < 1:
             return {'message': '序号必须为正整数！'}
+    if cursor.fetchall() and old_id != id:
+        print(old_id, id)
+        return {'message': '新序号已存在！'}
+    
+    cursor.execute("DELETE FROM 发表论文 WHERE 序号=%s", old_id)
+    cursor.execute("DELETE FROM 论文 WHERE 序号=%s", old_id)
         
     cursor.execute("INSERT INTO 论文 VALUES (%s, %s, %s, %s, %s, %s)", (id, title, source, str(year)+'-01-01', type, level))
     i = 1

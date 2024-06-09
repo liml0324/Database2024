@@ -2,11 +2,12 @@
 <html lang="en">
     <head>
         <meta charset="utf-8" />
-        <title>登记发表论文情况</title>
-        <link href="../static/css/bootstrap.css" rel="stylesheet" />
+        <title>登记承担项目情况</title>
+        <link href="../../static/css/bootstrap.css" rel="stylesheet" />
+
         <style>
             body {
-                background: url("../static/img/background.jpg") no-repeat center
+                background: url("../../static/img/background.jpg") no-repeat center
                     center fixed;
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
@@ -36,12 +37,11 @@
                 padding: 20px; /* 设置内边距 */
                 margin-top: 20px;
             }
-            input {
-                margin-right: 10px;
-            }
-            .author {
-                margin-bottom: 10px;
-                margin-top: 10px;
+            .container.result {
+                background-color: #f8f9fa;
+                border-radius: 5px; /* 设置边框圆角 */
+                padding: 20px; /* 设置内边距 */
+                margin-top: 20px;
             }
         </style>
     </head>
@@ -52,25 +52,16 @@
             <div class="row">
                 <div class="col-lg-12 text-white text-center py-3">
                     <!-- 使用col-lg-12使占据整行，bg-primary为背景颜色为蓝色，text-white为字体颜色为白色，py-3为上下内边距为3 -->
-                    <h1 style="color: darkslategrey">发表论文情况</h1>
+                    <h1 style="color: darkslategrey">修改项目信息</h1>
                 </div>
             </div>
         </div>
         <div class="container query">
-            <div class="container" role="navigation">
-                <ul class="nav nav-tabs">
-                    <li role="presentation"><a href="../paper">查询</a></li>
-                    <li role="presentation" class="active">
-                        <a href="register">登记</a>
-                    </li>
-                </ul>
-            </div>
-
             <form
                 method="POST"
-                action="/paper/register"
+                action="/project/register"
                 style="margin-top: 20px"
-                id="register_form"
+                id="query_form"
             >
                 <div class="form-group">
                     <input
@@ -78,15 +69,8 @@
                         class="form-control"
                         id="id"
                         name="id"
-                        placeholder="序号  空缺则自动分配"
-                    />
-                </div>
-                <div class="form-group">
-                    <input
-                        type="text"
-                        class="form-control"
-                        name="title"
-                        placeholder="名称"
+                        value="{{ project.id }}"
+                        placeholder="项目号"
                         required
                     />
                 </div>
@@ -94,23 +78,26 @@
                     <input
                         type="text"
                         class="form-control"
+                        id="name"
+                        name="name"
+                        value="{{ project.name }}"
+                        placeholder="项目名称"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="source"
                         name="source"
-                        placeholder="发表源"
+                        value="{{ project.source }}"
+                        placeholder="项目来源"
                         required
                     />
                 </div>
                 <div class="form-group">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="year"
-                        name="year"
-                        placeholder="发表年份"
-                        required
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="type">类型：</label>
+                    <label for="type">项目类型：</label>
                     <div
                         class="form-check form-check-inline"
                         style="display: inline-block"
@@ -121,10 +108,11 @@
                             id="1"
                             name="type"
                             value="1"
+                            {{ "checked" if project.type == 1 else "" }}
                             required
                         />
                         <label class="form-check-label" for="1"
-                            >full paper</label
+                            >国家级项目</label
                         >
                     </div>
                     <div
@@ -137,10 +125,11 @@
                             id="2"
                             name="type"
                             value="2"
+                            {{ "checked" if project.type == 2 else "" }}
                             required
                         />
                         <label class="form-check-label" for="2"
-                            >short paper</label
+                            >省部级项目</label
                         >
                     </div>
                     <div
@@ -153,10 +142,11 @@
                             id="3"
                             name="type"
                             value="3"
+                            {{ "checked" if project.type == 3 else "" }}
                             required
                         />
                         <label class="form-check-label" for="3"
-                            >poster paper</label
+                            >市厅级项目</label
                         >
                     </div>
                     <!-- 添加更多的选项 -->
@@ -170,72 +160,11 @@
                             id="4"
                             name="type"
                             value="4"
+                            {{ "checked" if project.type == 4 else "" }}
                             required
                         />
                         <label class="form-check-label" for="4"
-                            >demo paper</label
-                        >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label for="level">等级：</label>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="1"
-                            name="level"
-                            value="1"
-                            required
-                        />
-                        <label class="form-check-label" for="1">CCF-A</label>
-                    </div>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="2"
-                            name="level"
-                            value="2"
-                            required
-                        />
-                        <label class="form-check-label" for="2">CCF-B</label>
-                    </div>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="3"
-                            name="level"
-                            value="3"
-                            required
-                        />
-                        <label class="form-check-label" for="3">CCF-C</label>
-                    </div>
-                    <!-- 添加更多的选项 -->
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="4"
-                            name="level"
-                            value="4"
-                            required
-                        />
-                        <label class="form-check-label" for="4"
-                            >中文 CCF-A</label
+                            >企业合作项目</label
                         >
                     </div>
                     <div
@@ -246,118 +175,157 @@
                             class="form-check-input"
                             type="radio"
                             id="5"
-                            name="level"
+                            name="type"
                             value="5"
+                            {{ "checked" if project.type == 5 else "" }}
                             required
                         />
                         <label class="form-check-label" for="5"
-                            >中文 CCF-B</label
+                            >其他类型项目</label
                         >
-                    </div>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="6"
-                            name="level"
-                            value="6"
-                            required
-                        />
-                        <label class="form-check-label" for="6">无等级</label>
                     </div>
                 </div>
                 <div class="form-group">
-                    <div id="authorContainer">
-                        <div class="author">
-                            <label for="author">作者1：</label>
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="funds"
+                        name="funds"
+                        value="{{ project.funds }}"
+                        placeholder="总经费(元)"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="begin_year"
+                        name="begin_year"
+                        value="{{ project.begin_year }}"
+                        placeholder="开始年份"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <input
+                        type="text"
+                        class="form-control"
+                        id="end_year"
+                        name="end_year"
+                        value="{{ project.end_year }}"
+                        placeholder="结束年份"
+                        required
+                    />
+                </div>
+                <div class="form-group">
+                    <div id="leaderContainer">
+                        {% for leader in leaders %}
+                        <div class="leader">
+                            <label for="leader">负责人{{ loop.index }}：</label>
                             <input
                                 type="text"
-                                name="authorId1"
+                                name="leaderId{{ loop.index }}"
+                                value="{{ leader.id }}"
                                 placeholder="工号"
                                 required
                             />
-                            <!-- <input
-                                type="text"
-                                name="authorOrder1"
-                                placeholder="序号"
-                                required
-                            /> -->
                             <input
-                                type="radio"
-                                name="isCorrespondingAuthor"
-                                value="1"
+                                type="text"
+                                name="leaderFunds{{ loop.index }}"
+                                value="{{ leader.funds }}"
+                                placeholder="承担经费(元)"
                                 required
                             />
-                            通讯作者
                         </div>
+                        {% endfor %}
                     </div>
 
-                    <button type="button" id="addAuthor">添加作者</button>
-                    <button type="button" id="removeAuthor">删除作者</button>
+                    <button type="button" id="addLeader">添加负责人</button>
+                    <button type="button" id="removeLeader">删除负责人</button>
                 </div>
                 <div class="form-group">
-                    <input type="submit" class="btn btn-primary" value="登记" />
+                    <input type="submit" class="btn btn-primary" value="修改" />
                 </div>
             </form>
         </div>
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="../../static/js/bootstrap.js"></script>
         <script>
             $(document).ready(function () {
-                $("#addAuthor").click(function () {
-                    var authorHtml =
-                        '<div class="author">\n' +
-                        '<label for="author">作者' +
-                        String($(".author").length + 1) +
+                $("#addLeader").click(function () {
+                    var leaderHtml =
+                        '<div class="leader">\n' +
+                        '<label for="leader">负责人' +
+                        String($(".leader").length + 1) +
                         "：</label>\n" +
-                        '<input type="text" name="authorId' +
-                        String($(".author").length + 1) +
+                        '<input type="text" name="leaderId' +
+                        String($(".leader").length + 1) +
                         '" placeholder="工号" required>\n' +
-                        // '<input type="text" name="authorOrder"' + String($(".author").length + 1) + ' placeholder="序号" required>\n' +
-                        '<input type="radio" name="isCorrespondingAuthor" value="' +
-                        String($(".author").length + 1) +
-                        '" required> 通讯作者\n' +
+                        '<input type="text" name="leaderFunds' +
+                        String($(".leader").length + 1) +
+                        '" placeholder="承担经费" required>\n' +
                         "</div>";
 
-                    $("#authorContainer").append(authorHtml);
+                    $("#leaderContainer").append(leaderHtml);
                 });
 
-                $("#removeAuthor").click(function () {
-                    if ($(".author").length > 1) {
-                        $(".author").last().remove();
+                $("#removeLeader").click(function () {
+                    if ($(".leader").length > 1) {
+                        $(".leader").last().remove();
                     }
                 });
             });
         </script>
         <script>
             $(document).ready(function () {
-                $("#register_form").submit(function (event) {
-                    var inputValue = $("#id").val();
-                    if (inputValue === "") {
-                    } else if (!Number.isInteger(Number(inputValue))) {
+                $("#query_form").submit(function (event) {
+                    var inputFunds = $("#funds").val();
+                    console.log(inputFunds);
+                    if (Number.isNaN(Number(inputFunds))) {
                         event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("序号必须为整数！");
+                        alert("总经费必须为数字！");
                         return;
                     }
-                    var inputValue = $("#year").val();
+
+                    // 其他代码...
+                    var inputYear = $("#begin_year").val();
                     var curYear = new Date().getFullYear();
-                    if (inputValue === "") {
-                        return;
-                    }
-                    if (!Number.isInteger(Number(inputValue))) {
+                    if (!Number.isInteger(Number(inputYear))) {
                         event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("输入的年份不合法！");
+                        alert("开始年份必须为整数！");
                         return;
                     } else if (
-                        Number(inputValue) < 1958 ||
-                        Number(inputValue) > curYear
+                        Number(inputYear) < 1958 ||
+                        Number(inputYear) > curYear
                     ) {
                         event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("输入的年份不合法！");
+                        alert("开始年份不合法！");
                         return;
+                    }
+                    var inputYear = $("#end_year").val();
+                    var curYear = new Date().getFullYear();
+                    if (!Number.isInteger(Number(inputYear))) {
+                        event.preventDefault(); // 阻止表单的默认提交行为
+                        alert("结束年份必须为整数！");
+                        return;
+                    } else if (
+                        Number(inputYear) < 1958
+                    ) {
+                        event.preventDefault(); // 阻止表单的默认提交行为
+                        alert("结束年份不合法！");
+                        return;
+                    }
+                    for (var i = 1; i <= $(".leader").length; i++) {
+                        var inputFunds = $(
+                            'input[name="leaderFunds' + String(i) + '"]'
+                        ).val();
+                        if (Number.isNaN(Number(inputFunds))) {
+                            event.preventDefault(); // 阻止表单的默认提交行为
+                            alert("负责人" + String(i) + "的承担经费必须为数字！");
+                            return;
+                        }
                     }
                     event.preventDefault(); // 阻止表单的默认提交行为
                     var currentUrl = window.location.href;
@@ -369,6 +337,12 @@
                         success: function (response) {
                             // 处理响应
                             alert(response.message);
+                            if (
+                                response.message ===
+                                "修改成功！点击确定关闭页面。"
+                            ) {
+                                window.close();
+                            }
                         },
                     });
                 });
