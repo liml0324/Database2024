@@ -5,42 +5,23 @@
 
 use faculty;
 
--- alter table 主讲课程 
---    drop foreign key FK_主讲课程_主讲课程_教师;
+alter table 主讲课程 
+   drop foreign key FK_主讲课程_主讲课程_教师;
 
--- alter table 主讲课程 
---    drop foreign key FK_主讲课程_主讲课程2_课程;
+alter table 主讲课程 
+   drop foreign key FK_主讲课程_主讲课程2_课程;
 
--- alter table 发表论文 
---    drop foreign key FK_发表论文_发表论文_教师;
+alter table 发表论文 
+   drop foreign key FK_发表论文_发表论文_教师;
 
--- alter table 发表论文 
---    drop foreign key FK_发表论文_发表论文2_论文;
+alter table 发表论文 
+   drop foreign key FK_发表论文_发表论文2_论文;
 
--- alter table 承担项目 
---    drop foreign key FK_承担项目_承担项目_教师;
+alter table 承担项目 
+   drop foreign key FK_承担项目_承担项目_教师;
 
--- alter table 承担项目 
---    drop foreign key FK_承担项目_承担项目2_项目;
-
-
--- alter table 主讲课程 
---    drop foreign key FK_主讲课程_主讲课程_教师;
-
--- alter table 主讲课程 
---    drop foreign key FK_主讲课程_主讲课程2_课程;
-
--- alter table 发表论文 
---    drop foreign key FK_发表论文_发表论文_教师;
-
--- alter table 发表论文 
---    drop foreign key FK_发表论文_发表论文2_论文;
-
--- alter table 承担项目 
---    drop foreign key FK_承担项目_承担项目_教师;
-
--- alter table 承担项目 
---    drop foreign key FK_承担项目_承担项目2_项目;
+alter table 承担项目 
+   drop foreign key FK_承担项目_承担项目2_项目;
 
 drop table if exists 主讲课程;
 
@@ -66,7 +47,7 @@ create table 主讲课程
    年份                   int  comment '',
    学期                   int  comment '',
    承担学时                 int  comment '',
-   primary key (工号, 课程号)
+   primary key (工号, 课程号, 年份, 学期)
    -- foreign key (工号) references 教师 (工号),
    -- foreign key (课程号) references 课程 (课程号)
 );
@@ -170,3 +151,10 @@ alter table 承担项目 add constraint FK_承担项目_承担项目_教师 fore
 alter table 承担项目 add constraint FK_承担项目_承担项目2_项目 foreign key (项目号)
       references 项目 (项目号) on delete restrict on update restrict;
 
+Insert into 教师 (工号, 姓名, 性别, 职称)-- 
+values
+('00001', '张俊霞', 1, 4),
+('00002', '李诚', 1, 4),
+('00003', '金培权', 1, 4),
+('00004', '李烨昊', 1, 2)
+;
