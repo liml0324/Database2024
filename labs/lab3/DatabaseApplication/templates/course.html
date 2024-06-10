@@ -63,14 +63,14 @@
                         <a href="#">查询</a>
                     </li>
                     <li role="presentation">
-                        <a href="paper/register">登记</a>
+                        <a href="course/register">登记</a>
                     </li>
                 </ul>
             </div>
 
             <form
                 method="POST"
-                action="/paper"
+                action="/course"
                 style="margin-top: 20px"
                 id="query_form"
             >
@@ -81,39 +81,30 @@
                         id="id"
                         name="id"
                         value="{{ query.id }}"
-                        placeholder="序号"
+                        placeholder="课程号"
                     />
                 </div>
                 <div class="form-group">
                     <input
                         type="text"
                         class="form-control"
-                        name="title"
-                        value="{{ query.title }}"
-                        placeholder="名称"
+                        name="name"
+                        value="{{ query.name }}"
+                        placeholder="课程名称"
                     />
                 </div>
                 <div class="form-group">
                     <input
                         type="text"
                         class="form-control"
-                        name="source"
-                        value="{{ query.source }}"
-                        placeholder="发表源"
+                        name="hours"
+                        id="hours"
+                        value="{{ query.hours }}"
+                        placeholder="学时数"
                     />
                 </div>
                 <div class="form-group">
-                    <input
-                        type="text"
-                        class="form-control"
-                        id="year"
-                        name="year"
-                        value="{{ query.year }}"
-                        placeholder="发表年份"
-                    />
-                </div>
-                <div class="form-group">
-                    <label for="type">类型：</label>
+                    <label for="type">课程性质：</label>
                     <div
                         class="form-check form-check-inline"
                         style="display: inline-block"
@@ -123,11 +114,11 @@
                             type="checkbox"
                             id="1"
                             name="type"
-                            {{ 'checked' if query.type1 == 1 else '' }}
+                            {{ 'checked' if '1' in query.type else '' }}
                             value="1"
                         />
                         <label class="form-check-label" for="1"
-                            >full paper</label
+                            >本科生课程</label
                         >
                     </div>
                     <div
@@ -139,49 +130,26 @@
                             type="checkbox"
                             id="2"
                             name="type"
-                            {{ 'checked' if query.type2 == 1 else '' }}
+                            {{ 'checked' if '2' in query.type else '' }}
                             value="2"
                         />
                         <label class="form-check-label" for="2"
-                            >short paper</label
-                        >
-                    </div>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="3"
-                            name="type"
-                            {{ 'checked' if query.type3 == 1 else '' }}
-                            value="3"
-                        />
-                        <label class="form-check-label" for="3"
-                            >poster paper</label
-                        >
-                    </div>
-                    <!-- 添加更多的选项 -->
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="4"
-                            name="type"
-                            {{ 'checked' if query.type4 == 1 else '' }}
-                            value="4"
-                        />
-                        <label class="form-check-label" for="4"
-                            >demo paper</label
+                            >研究生课程</label
                         >
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="level">等级：</label>
+                    <input
+                        type="number"
+                        class="form-control"
+                        name="year"
+                        id="year"
+                        value="{{ query.year }}"
+                        placeholder="年份"
+                    />
+                </div>
+                <div class="form-group">
+                    <label for="term">开课学期：</label>
                     <div
                         class="form-check form-check-inline"
                         style="display: inline-block"
@@ -190,11 +158,13 @@
                             class="form-check-input"
                             type="checkbox"
                             id="1"
-                            name="level"
-                            {{ 'checked' if query.level1 == 1 else '' }}
+                            name="term"
+                            {{ 'checked' if '1' in query.term else '' }}
                             value="1"
                         />
-                        <label class="form-check-label" for="1">CCF-A</label>
+                        <label class="form-check-label" for="1"
+                            >春季学期</label
+                        >
                     </div>
                     <div
                         class="form-check form-check-inline"
@@ -204,11 +174,13 @@
                             class="form-check-input"
                             type="checkbox"
                             id="2"
-                            name="level"
-                            {{ 'checked' if query.level2 == 1 else '' }}
+                            name="term"
+                            {{ 'checked' if '2' in query.term else '' }}
                             value="2"
                         />
-                        <label class="form-check-label" for="2">CCF-B</label>
+                        <label class="form-check-label" for="2"
+                            >夏季学期</label
+                        >
                     </div>
                     <div
                         class="form-check form-check-inline"
@@ -218,67 +190,22 @@
                             class="form-check-input"
                             type="checkbox"
                             id="3"
-                            name="level"
-                            {{ 'checked' if query.level3 == 1 else '' }}
+                            name="term"
+                            {{ 'checked' if '3' in query.term else '' }}
                             value="3"
                         />
-                        <label class="form-check-label" for="3">CCF-C</label>
-                    </div>
-                    <!-- 添加更多的选项 -->
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="4"
-                            name="level"
-                            {{ 'checked' if query.level4 == 1 else '' }}
-                            value="4"
-                        />
-                        <label class="form-check-label" for="4"
-                            >中文 CCF-A</label
+                        <label class="form-check-label" for="3"
+                            >秋季学期</label
                         >
-                    </div>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="5"
-                            name="level"
-                            {{ 'checked' if query.level5 == 1 else '' }}
-                            value="5"
-                        />
-                        <label class="form-check-label" for="5"
-                            >中文 CCF-B</label
-                        >
-                    </div>
-                    <div
-                        class="form-check form-check-inline"
-                        style="display: inline-block"
-                    >
-                        <input
-                            class="form-check-input"
-                            type="checkbox"
-                            id="6"
-                            name="level"
-                            {{ 'checked' if query.level6 == 1 else '' }}
-                            value="6"
-                        />
-                        <label class="form-check-label" for="6">无等级</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <input
                         type="text"
                         class="form-control"
-                        name="authorid"
-                        value="{{ query.authorid }}"
-                        placeholder="作者工号或姓名"
+                        name="teacherid"
+                        value="{{ query.teacherid }}"
+                        placeholder="教师工号或姓名"
                     />
                 </div>
                 <div class="form-group">
@@ -290,47 +217,47 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th scope="col">序号</th>
-                        <th scope="col">论文名称</th>
-                        <th scope="col">发表源</th>
-                        <th scope="col">发表年份</th>
+                        <th scope="col">课程号</th>
+                        <th scope="col">课程名称</th>
+                        <th scope="col">学时数</th>
+                        <th scope="col">课程性质</th>
                         <!-- 其他列... -->
-                        <th scope="col">类型</th>
-                        <th scope="col">等级</th>
-                        <th scope="col">作者</th>
+                        <th scope="col">年份</th>
+                        <th scope="col">开课学期</th>
+                        <th scope="col">教师</th>
                         <th scope="col">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% if papers is none %}
+                    {% if courses is none %}
                     <tr>
                         <td colspan="8" class="text-center">无结果</td>
                     </tr>
-                    {% else %} {% for paper in papers %}
+                    {% else %} {% for course in courses %}
                     <tr>
-                        <td>{{ paper.id }}</td>
-                        <td>{{ paper.title }}</td>
-                        <td>{{ paper.source }}</td>
+                        <td>{{ course.id }}</td>
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.hours }}</td>
                         <!-- 其他列... -->
-                        <td>{{ paper.year }}</td>
-                        <td>{{ paper.type }}</td>
-                        <td>{{ paper.level }}</td>
-                        <td>{{ paper.authors }}</td>
+                        <td>{{ course.type }}</td>
+                        <td>{{ course.year }}</td>
+                        <td>{{ course.term }}</td>
+                        <td>{{ course.teachers }}</td>
                         <td>
                             <a
-                                href="/paper/{{ paper.id }}/view"
+                                href="/course/{{ course.id }}/view"
                                 target="_blank"
                                 class="btn btn-primary"
                                 >查看</a
                             >
                             <a
-                                href="/paper/{{ paper.id }}/edit"
+                                href="/course/{{ course.id }}/edit"
                                 target="_blank"
                                 class="btn btn-secondary"
                                 >编辑</a
                             >
                             <a
-                                href="/paper/{{ paper.id }}/delete"
+                                href="/course/{{ course.id }}/delete"
                                 target="_blank"
                                 class="btn btn-danger"
                                 >删除</a
@@ -346,19 +273,18 @@
         <script>
             $(document).ready(function () {
                 $("#query_form").submit(function (event) {
-                    var inputValue = $("#id").val();
-                    if (inputValue === "") {
-                        ;
-                    }
-                    else if (!Number.isInteger(Number(inputValue))) {
-                        event.preventDefault(); // 阻止表单的默认提交行为
-                        alert("序号必须为整数！");
-                        return;
-                    }
 
                     // 其他代码...
+                    var inputHours = $("#hours").val();
+                    if (inputHours === "") {
+                        ;
+                    }
+                    else if (!Number.isInteger(Number(inputHours)) || Number(inputHours) <= 0 ) {
+                        event.preventDefault(); // 阻止表单的默认提交行为
+                        alert("学时数必须为正整数！");
+                        return;
+                    }
                     var inputYear = $("#year").val();
-                    var curYear = new Date().getFullYear();
                     if (inputYear === "") {
                         ;
                     }
@@ -367,8 +293,7 @@
                         alert("年份必须为整数！");
                         return;
                     } else if (
-                        Number(inputYear) < 1958 ||
-                        Number(inputYear) > curYear
+                        Number(inputYear) < 1958
                     ) {
                         event.preventDefault(); // 阻止表单的默认提交行为
                         alert("年份不合法！");

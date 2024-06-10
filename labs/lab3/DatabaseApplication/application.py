@@ -176,10 +176,41 @@ def project_register():
     if request.method == 'GET':
         return render_template('project/register.html')
 
-@app.route('/course', methods=['GET'])
+@app.route('/course', methods=['GET', 'POST'])
 def course():
-    return render_template('course.html')
+    if request.method == 'POST':
+        id = request.form.get('id')
+        name = request.form.get('name')
+        hours = request.form.get('hours')
+        type = request.form.getlist('type')
+        year = request.form.get('year')
+        term = request.form.getlist('term')
+        teacherid = request.form.get('teacherid')
+        courses = mysql.course.get_course(id, name, hours, type, year, term, teacherid)
+        query = {'id': id, 'name': name, 'hours': hours, 'type': type, 'year': year, 'term': term, 'teacherid': teacherid}
+        return render_template('course.html', courses=courses, query=query)
+    if request.method == 'GET':
+        return render_template('course.html', query=None, courses=None)
 
 @app.route('/query', methods=['GET'])
 def query():
     return render_template('query.html')
+
+@app.route('/course/register', methods=['GET', 'POST'])
+def course_register():
+    teachers = []
+    if request.method == 'POST':
+        for i in range(1, 100):
+            teacherid = request.form.get('teacherId'+str(i))
+            if not teacherid:
+                break
+            teacherHours = request.form.get('teacherHours'+str(i))
+            teachers.append([teacherid, teacherHours])
+        id = request.form.get('id')
+        year = request.form.get('year')
+        term = request.form.get('term')
+        json = mysql.course.register_course(id, year, term, teachers)
+        return jsonify(json)
+    if request.method == 'GET':
+        return render_template('course/register.html')
+    

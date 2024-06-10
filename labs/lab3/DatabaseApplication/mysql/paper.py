@@ -68,7 +68,7 @@ def get_paper(id, title, source, year, type, level, authorid):
                 conn.close()
                 return None
             
-            sql += "论文.类型='%s' OR "
+            sql += "论文.类型=%s OR "
             params.append(int(t))
         sql = sql[:-4] + ') '
     if level:
@@ -84,7 +84,7 @@ def get_paper(id, title, source, year, type, level, authorid):
                 cursor.close()
                 conn.close()
                 return None
-            sql += "论文.级别='%s' OR "
+            sql += "论文.级别=%s OR "
             params.append(int(l))
         sql = sql[:-4] + ') '
     if authorid:
