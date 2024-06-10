@@ -74,7 +74,7 @@ create table 承担项目
    工号                   char(5) not null  comment '',
    项目号                  char(255) not null  comment '',
    排名                   int  comment '',
-   承担经费                 float  comment '',
+   承担经费                 float(12,2)  comment '',
    primary key (工号, 项目号)
    -- foreign key (工号) references 教师 (工号),
    -- foreign key (项目号) references 项目 (项目号)
@@ -127,7 +127,7 @@ create table 项目
    项目名称                 char(255)  comment '',
    项目来源                 char(255)  comment '',
    项目类型                 int  comment '',
-   总经费                  float  comment '',
+   总经费                  float(10,2)  comment '',
    开始年份                 int  comment '',
    结束年份                 int  comment '',
    primary key (项目号)
