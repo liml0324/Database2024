@@ -14,6 +14,11 @@
                 -o-background-size: cover;
                 background-size: cover;
             }
+            .container.header {
+                background: linear-gradient(to bottom, rgba(62, 78, 80, 0.8), rgba(62, 78, 80, 0.08)); /* 设置背景颜色为从左到右的渐变 */
+                padding: 5px; /* 设置内边距 */
+                width: 100%; /* 设置宽度为100% */
+            }
             .container.top {
                 /* 为新的类添加样式 */
                 height: 100px; /* 设置高度为视口的高度 */
@@ -22,23 +27,32 @@
                 display: flex; /* 使用flex布局 */
                 justify-content: center; /* 水平居中 */
                 align-items: center; /* 垂直居中 */
-                background-color: #f8f9fa;
+                background-color: #f8f9fac0;
+            }
+            .container.info {
+                background-color: #f8f9fac0;
+                border-radius: 5px; /* 设置边框圆角 */
+                padding: 10px; /* 设置内边距 */
+                margin-top: 20px;
+                align-items: center; /* 垂直居中 */
+                display: flex; /* 使用flex布局 */
+                height: auto;
             }
             .nav {
-                background-color: #f8f9fa; /* 设置背景颜色为浅灰色 */
+                background-color: #f8f9fa00; /* 设置背景颜色为浅灰色 */
                 border-radius: 5px; /* 设置边框圆角 */
                 /* padding: 20px; /* 设置内边距 */
                 /* width: 100%; /* 设置宽度为100% */
                 width: 95%;
             }
             .container.query {
-                background-color: #f8f9fa;
+                background-color: #f8f9fac0;
                 border-radius: 5px; /* 设置边框圆角 */
                 padding: 20px; /* 设置内边距 */
                 margin-top: 20px;
             }
             .container.result {
-                background-color: #f8f9fa;
+                background-color: #f8f9fac0;
                 border-radius: 5px; /* 设置边框圆角 */
                 padding: 20px; /* 设置内边距 */
                 margin-top: 20px;
@@ -46,6 +60,17 @@
         </style>
     </head>
     <body>
+        <a href="/">
+            <div class="container header">
+                <div class="row">
+                    <div class="col-lg-12 text-white text-left py-3">
+                        <h4 style="color: rgb(255, 255, 255)">
+                            教师教学科研登记系统
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </a>
         <div class="container top">
             <!-- 使用container-fluid使内容填满整个页面 -->
 
@@ -56,6 +81,15 @@
                 </div>
             </div>
         </div>
+        <a href="/info/teacher" target="_blank">
+            <div class="container info">
+                <div class="row">
+                    <div class="col-lg-12 text-left">
+                        <h4>点击查询教师及课程信息>>></h4>
+                    </div>
+                </div>
+            </div>
+        </a>
         <div class="container query">
             <form
                 method="POST"

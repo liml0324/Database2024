@@ -164,7 +164,26 @@ def get_course_details(id, year, term, transform=True):
     cursor.close()
     conn.close()
     return course, teachers
-        
+
+def get_all_courses():
+    conn = mysql.connect(
+        host='localhost',
+        user='root',
+        password='MySQL030324',
+        database='Faculty'
+    )
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM 课程")
+    courses_data = cursor.fetchall()
+    courses = []
+    for course_data in courses_data:
+        course = {}
+        course['id'], course['name'], course['hours'], course['type'] = course_data
+        course['type'] = '本科生课程' if course['type'] == 1 else '研究生课程'
+        courses.append(course)
+    cursor.close()
+    conn.close()
+    return courses
 
 def register_course(id, year, term, teachers):
     conn = mysql.connect(

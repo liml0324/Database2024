@@ -250,3 +250,29 @@ def course_edit(id, year, term):
     if request.method == 'GET':
         print(type(course['term']))
         return render_template('course/edit.html', course=course, teachers=teachers)
+    
+@app.route('/info/course', methods=['GET'])
+def course_info():
+    courses = mysql.course.get_all_courses()
+    return render_template('info/course.html', courses=courses)
+
+@app.route('/info/teacher', methods=['GET'])
+def teacher_info():
+    teachers = mysql.teacher.get_all_teachers()
+    return render_template('info/teacher.html', teachers=teachers)
+
+@app.route('/statistics', methods=['GET', 'POST'])
+def statistics():
+    if request.method == 'POST':
+        id = request.form.get('id')
+        begin_year = request.form.get('begin_year')
+        end_year = request.form.get('end_year')
+        result = mysql.statistics.get_statistics(id, begin_year, end_year)
+        query = {'id': id, 'begin_year': begin_year, 'end_year': end_year}
+        if not result:
+            return render_template('statistics.html', query=query, teacher=None, courses=None, paper=None, projects=None)
+        teacher, courses, papers, projects = result
+        return render_template('statistics.html', query=query, teacher=teacher, courses=courses, papers=papers, projects=projects)
+
+    if request.method == 'GET':
+        return render_template('statistics.html', query=None, teacher=None, courses=None, papers=None, projects=None)

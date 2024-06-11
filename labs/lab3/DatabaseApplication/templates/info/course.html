@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <title>教师及课程信息</title>
+        <link href="/static/css/bootstrap.css" rel="stylesheet" />
+
+        <style>
+            body {
+                background: url("/static/img/background.jpg") no-repeat center
+                    center fixed;
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover;
+            }
+            .container.header {
+                background: linear-gradient(to bottom, rgba(62, 78, 80, 0.8), rgba(62, 78, 80, 0.08)); /* 设置背景颜色为从左到右的渐变 */
+                padding: 5px; /* 设置内边距 */
+                width: 100%; /* 设置宽度为100% */
+            }
+            .container.top {
+                /* 为新的类添加样式 */
+                height: 100px; /* 设置高度为视口的高度 */
+                border-radius: 5px; /* 设置边框圆角 */
+                margin-top: 20px; /* 设置上外边距 */
+                display: flex; /* 使用flex布局 */
+                justify-content: center; /* 水平居中 */
+                align-items: center; /* 垂直居中 */
+                background-color: #f8f9fac0;
+            }
+            .container.info {
+                background-color: #f8f9fac0;
+                border-radius: 5px; /* 设置边框圆角 */
+                padding: 10px; /* 设置内边距 */
+                margin-top: 20px;
+                align-items: center; /* 垂直居中 */
+                display: flex; /* 使用flex布局 */
+                height: auto;
+            }
+            .nav {
+                background-color: #f8f9fa00; /* 设置背景颜色为浅灰色 */
+                border-radius: 5px; /* 设置边框圆角 */
+                /* padding: 20px; /* 设置内边距 */
+                /* width: 100%; /* 设置宽度为100% */
+                width: 95%;
+            }
+            .container.query {
+                background-color: #f8f9fac0;
+                border-radius: 5px; /* 设置边框圆角 */
+                padding: 20px; /* 设置内边距 */
+                margin-top: 20px;
+            }
+            .container.result {
+                background-color: #f8f9fac0;
+                border-radius: 5px; /* 设置边框圆角 */
+                padding: 20px; /* 设置内边距 */
+                margin-top: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <a href="/">
+            <div class="container header">
+                <div class="row">
+                    <div class="col-lg-12 text-white text-left py-3">
+                        <h4 style="color: rgb(255, 255, 255)">
+                            教师教学科研登记系统
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </a>
+        <div class="container top">
+            <!-- 使用container-fluid使内容填满整个页面 -->
+
+            <div class="row">
+                <div class="col-lg-12 text-white text-center py-3">
+                    <!-- 使用col-lg-12使占据整行，bg-primary为背景颜色为蓝色，text-white为字体颜色为白色，py-3为上下内边距为3 -->
+                    <h1 style="color: darkslategrey">教师及课程信息</h1>
+                </div>
+            </div>
+        </div>
+        <div class="container query">
+            <div class="container" role="navigation">
+                <ul class="nav nav-tabs">
+                    <li role="presentation">
+                        <a href="/info/teacher">教师</a>
+                    </li>
+                    <li role="presentation" class="active">
+                        <a href="#">课程</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="container result">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">课程号</th>
+                        <th scope="col">课程名称</th>
+                        <th scope="col">学时数</th>
+                        <th scope="col">课程性质</th>
+                        <!-- 其他列... -->
+                    </tr>
+                </thead>
+                <tbody>
+                    {% if courses is none %}
+                    <tr>
+                        <td colspan="4" class="text-center">无结果</td>
+                    </tr>
+                    {% else %} {% for course in courses %}
+                    <tr>
+                        <td>{{ course.id }}</td>
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.hours }}</td>
+                        <!-- 其他列... -->
+                        <td>{{ course.type }}</td>
+                    </tr>
+                    {% endfor %} {% endif %}
+                </tbody>
+            </table>
+        </div>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="/static/js/bootstrap.js"></script>
+    </body>
+</html>

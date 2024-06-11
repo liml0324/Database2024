@@ -13,20 +13,36 @@
                 -o-background-size: cover;
                 background-size: cover;
             }
+            .container.header {
+                background: linear-gradient(to bottom, rgba(62, 78, 80, 0.8), rgba(62, 78, 80, 0.08)); /* 设置背景颜色为从左到右的渐变 */
+                padding: 5px; /* 设置内边距 */
+                width: 100%; /* 设置宽度为100% */
+            }
             .container.course {
                 margin-top: 50px;
-                background-color: #f8f9fa;
+                background-color: #f8f9fac0;
                 padding: 10px;
 
             }
             .container.teacher {
                 margin-top: 20px;
-                background-color: #f8f9fa;
+                background-color: #f8f9fac0;
                 padding: 10px;
             }
         </style>
     </head>
     <body>
+        <a href="/">
+            <div class="container header">
+                <div class="row">
+                    <div class="col-lg-12 text-white text-left py-3">
+                        <h4 style="color: rgb(255, 255, 255)">
+                            教师教学科研登记系统
+                        </h4>
+                    </div>
+                </div>
+            </div>
+        </a>
         <div class="container">
             <div class="container course">
                 <h1 class="text-center my-4">课程详细信息</h1>
