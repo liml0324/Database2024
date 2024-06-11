@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8" />
         <title>登记主讲课程情况</title>
-        <link href="../static/css/bootstrap.css" rel="stylesheet" />
+        <link href="/static/css/bootstrap.css" rel="stylesheet" />
 
         <style>
             body {
-                background: url("../static/img/background.jpg") no-repeat center
+                background: url("/static/img/background.jpg") no-repeat center
                     center fixed;
                 -webkit-background-size: cover;
                 -moz-background-size: cover;
@@ -57,17 +57,6 @@
             </div>
         </div>
         <div class="container query">
-            <div class="container" role="navigation">
-                <ul class="nav nav-tabs">
-                    <li role="presentation">
-                        <a href="/course">查询</a>
-                    </li>
-                    <li role="presentation" class="active">
-                        <a href="#">登记</a>
-                    </li>
-                </ul>
-            </div>
-
             <form
                 method="POST"
                 action="/course/register"
@@ -80,7 +69,9 @@
                         class="form-control"
                         id="id"
                         name="id"
+                        value="{{ course.id }}"
                         placeholder="课程号"
+                        disabled
                     />
                 </div>
                 <div class="form-group">
@@ -89,8 +80,9 @@
                         class="form-control"
                         name="year"
                         id="year"
-                        
+                        value="{{ course.year }}"
                         placeholder="年份"
+                        required
                     />
                 </div>
                 <div class="form-group">
@@ -99,68 +91,51 @@
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="1"
-                            name="term"
-                            
-                            value="1"
-                        />
-                        <label class="form-check-label" for="1"
-                            >春季学期</label
-                        >
+                        <input class="form-check-input" type="radio" id="1"
+                        name="term" {{ "checked" if course.term == 1 }}
+                        value="1" required/>
+                        <label class="form-check-label" for="1">春季学期</label>
                     </div>
                     <div
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="2"
-                            name="term"
-                            
-                            value="2"
+                        <input class="form-check-input" type="radio" id="2"
+                        name="term" {{ "checked" if course.term == 2}} value="2" required
                         />
-                        <label class="form-check-label" for="2"
-                            >夏季学期</label
-                        >
+                        <label class="form-check-label" for="2">夏季学期</label>
                     </div>
                     <div
                         class="form-check form-check-inline"
                         style="display: inline-block"
                     >
-                        <input
-                            class="form-check-input"
-                            type="radio"
-                            id="3"
-                            name="term"
-                            
-                            value="3"
-                        />
-                        <label class="form-check-label" for="3"
-                            >秋季学期</label
-                        >
+                        <input class="form-check-input" type="radio" id="3"
+                        name="term" {{ "checked" if course.term == 3 }}
+                        value="3" required/>
+                        <label class="form-check-label" for="3">秋季学期</label>
                     </div>
                 </div>
                 <div class="form-group">
                     <div id="teacherContainer">
+                        {% for teacher in teachers %}
                         <div class="teacher">
-                            <label for="teacher">教师1：</label>
+                            <label for="teacher">教师{{ loop.index }}：</label>
                             <input
                                 type="text"
-                                name="teacherId1"
+                                name="teacherId{{ loop.index }}"
                                 placeholder="工号"
+                                value="{{ teacher.id }}"
                                 required
                             />
                             <input
                                 type="text"
-                                name="teacherHours1"
+                                name="teacherHours{{ loop.index }}"
                                 placeholder="承担学时数"
+                                value="{{ teacher.hours }}"
                                 required
                             />
                         </div>
+                        {% endfor %}
                     </div>
 
                     <button type="button" id="addTeacher">添加教师</button>
@@ -172,7 +147,7 @@
             </form>
         </div>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="../static/js/bootstrap.js"></script>
+        <script src="/static/js/bootstrap.js"></script>
         <script>
             $(document).ready(function () {
                 $("#addTeacher").click(function () {
@@ -202,16 +177,13 @@
         <script>
             $(document).ready(function () {
                 $("#query_form").submit(function (event) {
-
                     // 其他代码...
                     var inputYear = $("#year").val();
                     if (!Number.isInteger(Number(inputYear))) {
                         event.preventDefault(); // 阻止表单的默认提交行为
                         alert("年份必须为整数！");
                         return;
-                    } else if (
-                        Number(inputYear) < 1958
-                    ) {
+                    } else if (Number(inputYear) < 1958) {
                         event.preventDefault(); // 阻止表单的默认提交行为
                         alert("年份不合法！");
                         return;
@@ -239,6 +211,12 @@
                         success: function (response) {
                             // 处理响应
                             alert(response.message);
+                            if (
+                                response.message ===
+                                "修改成功！点击确定关闭页面。"
+                            ) {
+                                window.close();
+                            }
                         },
                     });
                 });

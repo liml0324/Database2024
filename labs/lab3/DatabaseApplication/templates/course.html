@@ -245,19 +245,19 @@
                         <td>{{ course.teachers }}</td>
                         <td>
                             <a
-                                href="/course/{{ course.id }}/view"
+                                href="/course/{{ course.id }}/{{ course.year }}/{{ course.term_id }}/view"
                                 target="_blank"
                                 class="btn btn-primary"
                                 >查看</a
                             >
                             <a
-                                href="/course/{{ course.id }}/edit"
+                                href="/course/{{ course.id }}/{{ course.year }}/{{ course.term_id }}/edit"
                                 target="_blank"
                                 class="btn btn-secondary"
                                 >编辑</a
                             >
                             <a
-                                href="/course/{{ course.id }}/delete"
+                                href="/course/{{ course.id }}/{{ course.year }}/{{ course.term_id }}/delete"
                                 target="_blank"
                                 class="btn btn-danger"
                                 >删除</a
@@ -315,7 +315,7 @@
                             // 在这里处理服务器返回的结果
                             alert(result.message); // 弹出提示信息
                             if(result.message == "删除成功！")
-                            row.remove(); // 删除表格行
+                            row.remove(); // 删除表格行 
                         },
                     });
                 });

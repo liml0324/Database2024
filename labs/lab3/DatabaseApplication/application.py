@@ -214,3 +214,39 @@ def course_register():
     if request.method == 'GET':
         return render_template('course/register.html')
     
+@app.route('/course/<id>/<year>/<term>/delete', methods=['DELETE'])
+def course_delete(id, year, term):
+    message = mysql.course.delete_course(id, year, term)
+    return jsonify({'message': message})
+
+@app.route('/course/<id>/<year>/<term>/view', methods=['GET'])
+def course_view(id, year, term):
+    result = mysql.course.get_course_details(id, year, term)
+    if not result:
+        return render_template('warning.html', message='课程不存在或课程信息有误！')
+    course, teachers = result
+    return render_template('course/view.html', course=course, teachers=teachers)
+
+@app.route('/course/<id>/<year>/<term>/edit', methods=['GET', 'POST'])
+def course_edit(id, year, term):
+    result = mysql.course.get_course_details(id, year, term, False)
+    if not result:
+        return render_template('warning.html', message='课程不存在或课程信息有误！')
+    course, teachers = result
+    if request.method == 'POST':
+        teachers = []
+        for i in range(1, 100):
+            teacherId = request.form.get('teacherId'+str(i))
+            if not teacherId:
+                break
+            teacherHours = request.form.get('teacherHours'+str(i))
+            teachers.append([teacherId, teacherHours])
+        old_year = course['year']
+        old_term = course['term']
+        year = request.form.get('year')
+        term = request.form.get('term')
+        json = mysql.course.edit_course(id, old_year, old_term, year, term, teachers)
+        return jsonify(json)
+    if request.method == 'GET':
+        print(type(course['term']))
+        return render_template('course/edit.html', course=course, teachers=teachers)
