@@ -15,11 +15,12 @@ def get_course(id, name, hours, type, year, term, teacherid):
     sql = "SELECT Distinct 课程.课程号, 主讲课程.学期, 主讲课程.年份 FROM 课程, 主讲课程, 教师 WHERE 课程.课程号 = 主讲课程.课程号 AND 主讲课程.工号 = 教师.工号 "
     
     if id:
-        sql += "AND 课程.课程号 = %s "
+        sql += "AND 课程.课程号 LIKE %s "
         params.append("%" + id + "%")
         
     if name:
-        sql += "AND 课程.课程名称 = %s "
+        print(name)
+        sql += "AND 课程.课程名称 LIKE %s "
         params.append("%" + name + "%")
     
     if hours:

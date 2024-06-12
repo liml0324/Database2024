@@ -55,12 +55,12 @@ def get_statistics(id, begin_year, end_year):
     cursor.execute('SELECT 论文.序号, 论文.论文名称, 论文.发表源, 论文.发表年份, 论文.类型, 论文.级别, 发表论文.排名, 发表论文.是否通讯作者 FROM 论文, 发表论文 WHERE 论文.序号=发表论文.序号 AND 发表论文.工号 = %s AND 论文.发表年份 >= %s AND 论文.发表年份 <= %s', (id, begin_year+'-1-1', end_year+'-1-1'))
     papers_data = cursor.fetchall()
     papers = []
-    for paper_id, name, source, year, type, level, rank, is_corresponding_author in papers_data:
+    for paper_id, title, source, year, type, level, rank, is_corresponding_author in papers_data:
         paper = {}
         paper['id'] = paper_id
-        paper['name'] = name
+        paper['title'] = title
         paper['source'] = source
-        paper['year'] = year
+        paper['year'] = str(year).split('-')[0]
         paper['type'] = ['', 'full paper', 'short paper', 'poster paper', 'demo paper'][type]
         paper['level'] = ['', 'CCF-A', 'CCF-B', 'CCF-C', '中文 CCF-A', '中文 CCF-B', '无等级'][level]
         paper['rank'] = rank
