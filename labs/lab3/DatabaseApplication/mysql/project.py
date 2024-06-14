@@ -81,7 +81,7 @@ def get_projects(id, name, source, type, funds, begin_year, end_year, leader_id)
             cursor.close()
             conn.close()
             return None
-        if end_year < begin_year:
+        if begin_year and end_year < begin_year:
             cursor.close()
             conn.close()
             return None

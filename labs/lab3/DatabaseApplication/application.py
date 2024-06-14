@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_file
+from spire.doc import Document, FileFormat
+import tempfile
 import os
 import mysql
 import mysql.paper
@@ -267,12 +269,29 @@ def statistics():
         id = request.form.get('id')
         begin_year = request.form.get('begin_year')
         end_year = request.form.get('end_year')
-        result = mysql.statistics.get_statistics(id, begin_year, end_year)
         query = {'id': id, 'begin_year': begin_year, 'end_year': end_year}
-        if not result:
-            return render_template('statistics.html', query=query, teacher=None, courses=None, paper=None, projects=None)
+        result = mysql.statistics.get_statistics(id, begin_year, end_year)
+        if type(result) == str:
+            return jsonify({'message': result})
         teacher, courses, papers, projects = result
-        return render_template('statistics.html', query=query, teacher=teacher, courses=courses, papers=papers, projects=projects)
+        return render_template('statistics.html', query=query, teacher=teacher, courses=courses, papers=papers, projects=projects, show_button=True, begin_year=begin_year, end_year=end_year)
 
     if request.method == 'GET':
-        return render_template('statistics.html', query=None, teacher=None, courses=None, papers=None, projects=None)
+        return render_template('statistics.html', query=None, teacher=None, courses=None, papers=None, projects=None, show_button=False)
+    
+@app.route('/statistics/<id>/<begin_year>/<end_year>', methods=['GET'])
+def get_pdf(id, begin_year, end_year):
+    result = mysql.statistics.get_statistics(id, begin_year, end_year)
+    if type(result) == str:
+        return render_template('warning.html', message=result)
+    teacher, courses, papers, projects = result
+    query = {'id': id, 'begin_year': begin_year, 'end_year': end_year}
+    html_text = render_template('pdf.html', query=query, teacher=teacher, courses=courses, papers=papers, projects=projects)
+    pdf_file = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf")
+    pdf_file.close()
+    doc = Document()
+    sec = doc.AddSection()
+    par = sec.AddParagraph()
+    par.AppendHTML(html_text)
+    doc.SaveToFile(pdf_file.name, FileFormat.PDF)
+    return send_file(pdf_file.name, mimetype='application/pdf', as_attachment=True)

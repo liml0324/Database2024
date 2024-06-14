@@ -68,8 +68,8 @@
                 line-height: 38px;
             }
             .custom-row {
-        margin-left: 0;
-    }
+                margin-left: 0;
+            }
         </style>
     </head>
     <body>
@@ -278,6 +278,16 @@
                 </tbody>
             </table>
         </div>
+        {% if show_button %}
+        <div class="container result">
+            <a
+                href="/statistics/{{ teacher.id }}/{{ begin_year }}/{{ end_year }}"
+                class="btn btn-primary"
+                target="_blank"
+                >下载 PDF</a
+            >
+        </div>
+        {% endif %}
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <script src="../static/js/bootstrap.js"></script>
         <script>
@@ -306,6 +316,28 @@
                         alert("结束年份不得小于开始年份！");
                         return;
                     }
+                    $.ajax({
+                        url: "/statistics", // 请求的 URL
+                        type: "POST",
+                        data: $(this).serialize()
+                        success: function (data, textStatus, jqXHR) {
+                            // 检查返回的数据类型
+                            var contentType = jqXHR.getResponseHeader("Content-Type");
+                            if (contentType.includes("application/json")) {
+                                // 如果返回的是 JSON，显示提示信息
+                                alert(data.message);
+                            } else if (contentType.includes("text/html")) {
+                                // 如果返回的是 HTML，跳转到新页面
+                                document.open();
+                                document.write(data);
+                                document.close();
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            // 在这里处理错误
+                            alert("发生错误：" + errorThrown);
+                        }
+                    });
                 });
             });
         </script>

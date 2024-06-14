@@ -8,10 +8,16 @@ def get_statistics(id, begin_year, end_year):
         database='Faculty'
     )
     cursor = conn.cursor()
+    if not id:
+        return "请输入工号"
+    if not begin_year:
+        return "请输入起始年份"
+    if not end_year:
+        return "请输入结束年份"
     cursor.execute('SELECT * FROM 教师 WHERE 工号 = %s', (id,))
     teacher_data = cursor.fetchone()
     if not teacher_data:
-        return None
+        return "工号不存在"
     teacher = {}
     teacher['id'], teacher['name'], teacher['gender'], teacher['title'] = teacher_data
     teacher['title'] = ['','博士后' , '助教', '讲师', '副教授', '特任教授', '教授', '助理研究员', '特任副研究员', '副研究员', '特任研究员', '研究员'][teacher['title']]
