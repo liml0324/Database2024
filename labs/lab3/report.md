@@ -68,3 +68,171 @@
 # 3 详细设计
 
 # 4 实现与测试
+## 4.1 实现结果
+- 主页面
+![alt text](report_src/image-1.png)
+- 论文查询页面
+![alt text](report_src/image-4.png)
+- 论文详情页面
+![alt text](report_src/image-3.png)
+- 论文修改页面
+![alt text](report_src/image-5.png)
+- 论文登记页面
+![alt text](report_src/image-6.png)
+- 项目查询页面
+![alt text](report_src/image-7.png)
+- 项目详情页面
+![alt text](report_src/image-8.png)
+- 项目修改页面
+![alt text](report_src/image-9.png)
+- 项目登记页面
+![alt text](report_src/image-10.png)
+- 课程查询页面
+![alt text](report_src/image-11.png)
+- 课程详情页面
+![alt text](report_src/image-12.png)
+- 课程修改页面
+![alt text](report_src/image-13.png)
+- 课程登记页面
+![alt text](report_src/image-14.png)
+- 统计查询页面
+![alt text](report_src/image-15.png)
+- 全部教师信息查看页面
+![alt text](report_src/image-16.png)
+- 全部课程信息查看页面
+![alt text](report_src/image-17.png)
+
+## 4.2 测试结果
+### 4.2.1 发表论文查询
+查询页面提供了多个查找条件，可以填写任意一个或多个条件进行查询，系统会返回同时满足填写的所有条件的结果（对于多选框，则满足其中任意一个）。也可以不填写任何条件，直接点击查询按钮，系统会返回全部结果。
+- 输入数据查询
+![alt text](report_src/image-18.png)
+- 查询全部结果
+![alt text](report_src/image-19.png)
+- 点击查看可查看详情
+![alt text](report_src/image-24.png)
+
+### 4.2.2 发表论文登记
+填写登记界面的所有字段即可进行登记（序号可以留空，系统自动选择当前所有序号的最大值+1作为序号）。如果有部分输入数据不合法，则系统会给出提示。否则会成功登记。
+- 年份不合法
+![alt text](report_src/image-20.png)
+- 工号不存在
+![alt text](report_src/image-21.png)
+- 成功登记
+![alt text](report_src/image-22.png)
+- 登记后查询
+![alt text](report_src/image-23.png)
+
+### 4.2.3 发表论文修改
+点击编辑，系统会返回修改页面，其中所有字段会自动填写上当前的值，进行修改并提交即可。
+这一功能同样有输入检查，如果输入不合法，系统会给出提示。在此不再展示。
+- 修改页面
+![alt text](report_src/image-25.png)
+- 成功修改部分信息
+![alt text](report_src/image-26.png)
+- 修改后查询
+![alt text](report_src/image-27.png)
+
+### 4.2.4 发表论文删除
+直接点击删除按钮即可。
+- 删除前
+![alt text](report_src/image-28.png)
+- 删除成功
+![alt text](report_src/image-29.png)
+- 删除后
+![alt text](report_src/image-30.png)
+
+### 4.2.5 承担项目查询
+与发表论文查询类似，不再赘述
+- 输入数据查询
+![alt text](report_src/image-31.png)
+- 查询全部结果
+![alt text](report_src/image-36.png)
+- 查看详情
+![alt text](report_src/image-32.png)
+
+### 4.2.6 承担项目登记
+与发表论文登记类似，不再赘述
+- 经费之和不等于总经费
+![alt text](report_src/image-33.png)
+- 成功登记
+![alt text](report_src/image-34.png)
+- 登记后查询
+![alt text](report_src/image-35.png)
+
+### 4.2.7 承担项目修改
+与发表论文修改类似，不再赘述
+- 修改页面
+![alt text](report_src/image-37.png)
+- 成功修改部分信息
+![alt text](report_src/image-38.png)
+- 修改后查询
+![alt text](report_src/image-39.png)
+
+### 4.2.8 承担项目删除
+与发表论文删除类似，不再赘述
+- 删除前
+![alt text](report_src/image-35.png)
+- 删除成功
+![alt text](report_src/image-40.png)
+- 删除后
+![alt text](report_src/image-41.png)
+
+### 4.2.9 主讲课程查询
+与发表论文查询类似，不再赘述
+- 输入数据查询
+![alt text](report_src/image-42.png)
+- 查询全部结果
+![alt text](report_src/image-43.png)
+- 查看详情
+![alt text](report_src/image-44.png)
+
+### 4.2.10 主讲课程登记
+由于教师数据和课程数据不允许修改，因此这里可以填写的项比较少。同样需要进行输入检查。
+- 学时之和不等于总学时
+![alt text](report_src/image-45.png)
+- 成功登记
+![alt text](report_src/image-46.png)
+- 登记后查询
+![alt text](report_src/image-47.png)
+
+### 4.2.11 主讲课程修改
+这里不允许修改课程号。如果要换成另一门课而其余信息不变，那么应该先删除再登记。
+- 修改页面
+![alt text](report_src/image-48.png)
+- 成功修改部分信息
+![alt text](report_src/image-49.png)
+- 修改后查询
+![alt text](report_src/image-50.png)
+
+### 4.2.12 主讲课程删除
+与发表论文删除类似，不再赘述
+- 删除前
+![alt text](report_src/image-46.png)
+- 删除成功
+![alt text](report_src/image-51.png)
+- 删除后
+![alt text](report_src/image-52.png)
+
+### 4.2.13 统计查询
+输入教师工号和年份范围，点击查询即可。系统会返回该教师在该年份范围内的所有信息，并提供导出pdf的功能。
+- 查询结果
+![alt text](report_src/image-53.png)
+![alt text](report_src/image-54.png)
+- 导出pdf
+![alt text](report_src/image-55.png)
+
+### 4.2.14 全部教师信息查看
+这一功能是为了方便填写信息。不提供增删改功能。
+- 教师信息
+![alt text](report_src/image-56.png)
+
+### 4.2.15 全部课程信息查看
+这一功能是为了方便填写信息。不提供增删改功能。
+- 课程信息
+![alt text](report_src/image-57.png)
+
+# 5 总结与讨论
+本次实验是计科各类课程实验中少有的独立完成一个功能较为完整、有一定规模的系统的实验。这次实验使我的数据库开发能力得到了提升，对数据库设计、SQL语句的使用有了更深入的了解。采用B/S架构设计系统使得我同时也学到了不少网页开发的知识，对前后端的交互有了更深入的了解。同时，我的Coding能力在本次实验中也得到了提升，对Python和HTML的使用更加熟练。
+
+尽管如此，我仍然建议以后的实验能够做出一些改变。我在完成这一实验时，大部分的时间都花在了编写网页（前端页面和后端响应）上，而数据库（SQL）相关的内容反而没花多少时间（这一点从Github的统计数据也可以看出来，HTML的代码量占了70\%以上）。希望以后的数据库实验能更注重数据库设计和SQL语句的使用，比如可以提供网页（或客户端）部分的代码框架，让大家实现数据库相关部分，同时提高数据库设计和SQL语句的难度，以保持整体工作量不变。

@@ -42,7 +42,7 @@ def get_course(id, name, hours, type, year, term, teacherid):
                 return None
             if t < 1 or t > 2:
                 return None
-            sql += "课程.课程类型 = %s OR "
+            sql += "课程.课程性质 = %s OR "
             params.append(t)
         sql = sql[:-4] + ") "
         

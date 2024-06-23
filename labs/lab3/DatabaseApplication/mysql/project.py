@@ -42,7 +42,7 @@ def get_projects(id, name, source, type, funds, begin_year, end_year, leader_id)
                 return None
             
             sql += '项目.项目类型 = %s OR '
-            params.append(type_list[int(t)])
+            params.append(int(t))
         sql = sql[:-4] + ')'
 
     if funds:
