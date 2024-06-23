@@ -17,7 +17,14 @@ def get_statistics(id, begin_year, end_year):
     cursor.execute('SELECT * FROM 教师 WHERE 工号 = %s', (id,))
     teacher_data = cursor.fetchone()
     if not teacher_data:
-        return "工号不存在"
+        return "工号不存在！"
+    try :
+        begin_year = int(begin_year)
+        end_year = int(end_year)
+    except:
+        return "年份必须为整数！"
+    if begin_year > end_year:
+        return "起始年份不能大于结束年份！"
     teacher = {}
     teacher['id'], teacher['name'], teacher['gender'], teacher['title'] = teacher_data
     teacher['title'] = ['','博士后' , '助教', '讲师', '副教授', '特任教授', '教授', '助理研究员', '特任副研究员', '副研究员', '特任研究员', '研究员'][teacher['title']]
